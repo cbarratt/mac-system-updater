@@ -38,7 +38,6 @@ module System
         error = stderr.read
         puts '  - No new software updates available.' if error.include?('No new software available')
       end
-      break_output
     end
 
     def update_rvm
