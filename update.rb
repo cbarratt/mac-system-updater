@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'open3'
+require 'pty'
 require 'pry'
 
 module System
@@ -12,6 +13,7 @@ module System
       update_rvm if File.exists? File.expand_path('~/.rvm')
       update_rbenv if File.exists? File.expand_path('~/.rbenv')
       check_mac_store_updates
+      repair_disk_permissions
     end
 
     def break_output
@@ -31,6 +33,34 @@ module System
       break_output
     end
 
+    def run?
+      puts 'Do you want to perform this action? (y/n)'
+      answer = gets.chomp
+      if answer == 'y'
+        true
+      else
+        false
+      end
+    end
+
+    def repair_disk_permissions
+      puts '# Repairing OSX disk permissions'
+      if run?
+        begin
+          PTY.spawn('diskutil repairPermissions /') do |stdin, stdout, pid|
+            begin
+              stdin.each { |line| print line }
+            rescue Errno::EIO
+            end
+          end
+        rescue PTY::ChildExited
+          puts "The child process exited!"
+        end
+      else
+        puts '  - Skipped.'
+      end
+    end
+
     def check_mac_store_updates
       check_update_message('Mac App Store')
       Open3.popen3('softwareupdate -l') do |stdin, stdout, stderr, thread|
@@ -43,6 +73,7 @@ module System
         end
         puts '  - No new software updates available.' if error.include?('No new software available')
       end
+      break_output
     end
 
     def update_rvm
