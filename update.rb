@@ -26,10 +26,11 @@ module System
 
     def system_info
       puts '# System information:'
-      puts '  - CPU: ' + %x{sysctl -n machdep.cpu.brand_string}
-      puts '  - OSX: ' + %x{sw_vers | awk -F':\t' '{print $2}' | paste -d ' ' - - -}
-      puts '  - Host: ' + %x{scutil --get ComputerName}
-      puts '  - RAM: ' + %x{sysctl -n hw.memsize | awk '{print $0/1073741824" GB RAM"}'}
+      puts '  - CPU: ' + %x(sysctl -n machdep.cpu.brand_string)
+      puts '  - OSX: ' + %x(sw_vers | awk -F':\t' '{print $2}' | paste -d ' ' - - -)
+      puts '  - Host: ' + %x(scutil --get ComputerName)
+      puts '  - RAM: ' + %x(sysctl -n hw.memsize | awk '{print $0/1073741824" GB RAM"}')
+      puts '  - IP: ' + %x(ipconfig getifaddr en0)
       break_output
     end
 
@@ -54,7 +55,7 @@ module System
             end
           end
         rescue PTY::ChildExited
-          puts "The child process exited!"
+          puts 'The child process exited!'
         end
       else
         puts '  - Skipped.'
@@ -114,7 +115,7 @@ module System
 
     def update_brew_packages
       check_update_message('Homebrew')
-      if %x{brew update | grep Already}
+      if %x(brew update | grep Already)
         puts '  - Homebrew packages already up to date.'
       else
         puts '# Updating Homebrew packages...'
