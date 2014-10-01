@@ -24,6 +24,17 @@ module System
       puts "# Checking #{app} for updates..."
     end
 
+    def find_ip_address
+      #@ip = %w(en0 en1 en2 en3 en4 en5 en6 en7 en8 en9).map do |eth|
+      #  %x(ipconfig getifaddr #{eth})
+      #end
+      #binding.pry
+      #puts '  ' + @ip.reject(&:empty?)
+      #@ip.reject!(&:empty?).join(',').lines.each do |line|
+      #  puts line.delete!("\n")
+      #end
+    end
+
     def system_info
       puts '# System information:'
       puts '  - CPU: ' + %x(sysctl -n machdep.cpu.brand_string)
@@ -31,6 +42,7 @@ module System
       puts '  - Host: ' + %x(scutil --get ComputerName)
       puts '  - RAM: ' + %x(sysctl -n hw.memsize | awk '{print $0/1073741824" GB RAM"}')
       puts '  - IP: ' + %x(ipconfig getifaddr en0)
+      #find_ip_address
       break_output
     end
 
