@@ -36,6 +36,11 @@ module System
       Open3.popen3('softwareupdate -l') do |stdin, stdout, stderr, thread|
         output = stdout.read
         error = stderr.read
+        updates = output.split(/\r\n|\r|\n/, 5).last
+        if output.include?('Software Update found')
+          puts updates
+          %x(softwareupdate -i -a)
+        end
         puts '  - No new software updates available.' if error.include?('No new software available')
       end
     end
