@@ -10,8 +10,8 @@ module System
       system_info
       update_brew_packages
       update_oh_my_zsh
-      update_rvm if File.exists? File.expand_path('~/.rvm')
-      update_rbenv if File.exists? File.expand_path('~/.rbenv')
+      update_rvm if File.exist? File.expand_path('~/.rvm')
+      update_rbenv if File.exist? File.expand_path('~/.rbenv')
       check_mac_store_updates
       repair_disk_permissions
     end
@@ -25,14 +25,14 @@ module System
     end
 
     def find_ip_address
-      #@ip = %w(en0 en1 en2 en3 en4 en5 en6 en7 en8 en9).map do |eth|
+      # @ip = %w(en0 en1 en2 en3 en4 en5 en6 en7 en8 en9).map do |eth|
       #  %x(ipconfig getifaddr #{eth})
-      #end
-      #binding.pry
-      #puts '  ' + @ip.reject(&:empty?)
-      #@ip.reject!(&:empty?).join(',').lines.each do |line|
+      # end
+      # binding.pry
+      # puts '  ' + @ip.reject(&:empty?)
+      # @ip.reject!(&:empty?).join(',').lines.each do |line|
       #  puts line.delete!("\n")
-      #end
+      # end
     end
 
     def system_info
@@ -40,7 +40,7 @@ module System
       puts '  - CPU: ' + %x(sysctl -n machdep.cpu.brand_string)
       puts '  - OSX: ' + %x(sw_vers | awk -F':\t' '{print $2}' | paste -d ' ' - - -)
       puts '  - Host: ' + %x(scutil --get ComputerName)
-      puts '  - RAM: ' + %x(sysctl -n hw.memsize | awk '{print $0/1073741824" GB RAM"}')
+      puts '  - RAM: ' + %x(sysctl -n hw.memsize | awk '{print $0/1073741824" GB"}')
       puts '  - IP: ' + %x(ipconfig getifaddr en0)
       #find_ip_address
       break_output
@@ -60,7 +60,7 @@ module System
       puts '# Repairing OSX disk permissions'
       if run?
         begin
-          PTY.spawn('diskutil repairPermissions /') do |stdin, stdout, pid|
+          PTY.spawn('diskutil repairPermissions /') do |stdin|
             begin
               stdin.each { |line| print line }
             rescue Errno::EIO
@@ -76,7 +76,7 @@ module System
 
     def check_mac_store_updates
       check_update_message('Mac App Store')
-      Open3.popen3('softwareupdate -l') do |stdin, stdout, stderr, thread|
+      Open3.popen3('softwareupdate -l') do |stdin, stdout, stderr|
         output = stdout.read
         error = stderr.read
         updates = output.split(/\r\n|\r|\n/, 5).last
@@ -91,7 +91,7 @@ module System
 
     def update_rvm
       check_update_message('RVM')
-      Open3.popen3('rvm get stable') do |stdin, stdout, stderr, thread|
+      Open3.popen3('rvm get stable') do |stdin, stdout|
         output = stdout.read
         puts '  - RVM updated.' if output.include?('RVM reloaded')
       end
@@ -107,10 +107,10 @@ module System
     end
 
     def update_oh_my_zsh
-      if File.exists? File.expand_path('~/.oh-my-zsh')
+      if File.exist? File.expand_path('~/.oh-my-zsh')
         check_update_message('Oh My Zsh')
 
-        Open3.popen3('env ZSH=$ZSH /bin/sh $ZSH/tools/upgrade.sh') do |stdin, stdout, stderr, thread|
+        Open3.popen3('env ZSH=$ZSH /bin/sh $ZSH/tools/upgrade.sh') do |stdin, stdout|
           output = stdout.read
           if output.include?('Current branch master is up to date')
             puts '  - Oh My Zsh already up to date.'
