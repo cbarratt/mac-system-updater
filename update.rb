@@ -2,7 +2,6 @@
 
 require 'open3'
 require 'pty'
-require 'pry'
 
 module System
   class Update
@@ -24,25 +23,13 @@ module System
       puts "# Checking #{app} for updates..."
     end
 
-    def find_ip_address
-      # @ip = %w(en0 en1 en2 en3 en4 en5 en6 en7 en8 en9).map do |eth|
-      #  %x(ipconfig getifaddr #{eth})
-      # end
-      # binding.pry
-      # puts '  ' + @ip.reject(&:empty?)
-      # @ip.reject!(&:empty?).join(',').lines.each do |line|
-      #  puts line.delete!("\n")
-      # end
-    end
-
     def system_info
       puts '# System information:'
-      puts '  - CPU: ' + %x(sysctl -n machdep.cpu.brand_string)
-      puts '  - OSX: ' + %x(sw_vers | awk -F':\t' '{print $2}' | paste -d ' ' - - -)
+      puts '  - CPU: '  + %x(sysctl -n machdep.cpu.brand_string)
+      puts '  - OSX: '  + %x(sw_vers | awk -F':\t' '{print $2}' | paste -d ' ' - - -)
       puts '  - Host: ' + %x(scutil --get ComputerName)
-      puts '  - RAM: ' + %x(sysctl -n hw.memsize | awk '{print $0/1073741824" GB"}')
-      puts '  - IP: ' + %x(ipconfig getifaddr en0)
-      #find_ip_address
+      puts '  - RAM: '  + %x(sysctl -n hw.memsize | awk '{print $0/1073741824" GB"}')
+      puts '  - IP: '   + %x(ipconfig getifaddr en0)
       break_output
     end
 
@@ -60,7 +47,7 @@ module System
       puts '# Repairing OSX disk permissions'
       if run?
         begin
-          PTY.spawn('diskutil repairPermissions /') do |stdin|
+          PTY.spawn('diskutil repairPermissions /') do |stdin, stdout, stderr, thread|
             begin
               stdin.each { |line| print line }
             rescue Errno::EIO
