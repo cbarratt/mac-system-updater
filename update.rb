@@ -2,14 +2,19 @@
 
 require 'open3'
 require 'pty'
+require 'pry'
 
 module System
   class Update
     def perform
       system_info
       update_brew_packages
+      cleanup_homebrew
       update_oh_my_zsh
-      update_rvm if File.exist? File.expand_path('~/.rvm')
+      if File.exist? File.expand_path('~/.rvm')
+        update_rvm
+        cleanup_rvm
+      end
       update_rbenv if File.exist? File.expand_path('~/.rbenv')
       check_mac_store_updates
       repair_disk_permissions
@@ -34,7 +39,7 @@ module System
     end
 
     def run?
-      puts 'Do you want to perform this action? (y/n)'
+      puts ' - Do you want to perform this action? (y/n)'
       answer = gets.chomp
       if answer == 'y'
         true
@@ -108,6 +113,42 @@ module System
         end
       else
         puts '# Oh My Zsh is not installed. Skipped.'
+      end
+      break_output
+    end
+
+    def cleanup_rvm
+      puts '# Cleanup of RVM'
+      if run?
+        begin
+          PTY.spawn('rvm cleanup all') do |stdin, stdout, stderr, thread|
+            begin
+              stdin.each { |line| print line }
+            rescue Errno::EIO
+            end
+          end
+        rescue PTY::ChildExited
+          puts 'The child process exited!'
+        end
+      else
+        puts '  - Skipped.'
+      end
+      break_output
+    end
+
+    def cleanup_homebrew
+      puts '# Cleanup of Homebrew packages'
+      if run?
+        Open3.popen3('brew cleanup') do |stdin, stdout|
+          output = stdout.read
+          if output.empty?
+            puts '  - Old Homebrew packages already cleaned.'
+          else
+            puts '  - Cleaned Homebrew packages.'
+          end
+        end
+      else
+        puts '  - Skipped.'
       end
       break_output
     end
