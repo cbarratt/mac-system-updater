@@ -3,27 +3,54 @@
 require 'open3'
 require 'pty'
 require 'pry'
+require 'json'
+require 'net/http'
 
 module System
   class Update
     def perform
       system_info
+      check_rubygems_version
+
       if File.exists?('/usr/local/bin/brew')
         update_brew_packages
         cleanup_homebrew
       end
-      update_oh_my_zsh
+
       if File.exist? File.expand_path('~/.rvm')
         update_rvm
         cleanup_rvm
       end
+
+      update_oh_my_zsh
       update_rbenv if File.exist? File.expand_path('~/.rbenv')
+
+      puts '##################'
+      puts '# Mac OSX checks #'
+      puts '##################'
+      break_output
       check_mac_store_updates
       repair_disk_permissions
     end
 
     def break_output
       puts ''
+    end
+
+    def check_rubygems_version
+      puts '# Checking Rubygems version is up to date...'
+      uri = URI('https://rubygems.org/api/v1/gems/rubygems-update.json')
+      response = Net::HTTP.get(uri)
+      response = JSON.parse(response)
+
+      current = %x(gem -v).delete!("\n")
+      latest = response['version']
+      if current < latest
+        system 'gem update --system'
+      else
+        puts " - Rubygems #{current} is the latest version."
+      end
+      break_output
     end
 
     def check_update_message(app)
