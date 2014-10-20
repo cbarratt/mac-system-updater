@@ -12,7 +12,7 @@ module System
       system_info
       check_rubygems_version
 
-      if File.exists?('/usr/local/bin/brew')
+      if File.exist?('/usr/local/bin/brew')
         update_brew_packages
         cleanup_homebrew
       end
@@ -45,10 +45,10 @@ module System
 
       current = %x(gem -v).delete!("\n")
       latest = response['version']
-      if current < latest
+      if Gem::Version.new(current) < Gem::Version.new(latest)
         system 'gem update --system'
       else
-        puts " - Rubygems #{current} is the latest version."
+        puts "  - You currently have Rubygems #{current} which is the latest version."
       end
       break_output
     end
@@ -69,7 +69,7 @@ module System
     end
 
     def run?
-      puts ' - Do you want to perform this action? (y/n)'
+      puts '  - Do you want to perform this action? (y/n)'
       answer = gets.chomp
       if answer == 'y'
         true
