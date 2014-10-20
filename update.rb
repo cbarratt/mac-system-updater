@@ -8,8 +8,10 @@ module System
   class Update
     def perform
       system_info
-      update_brew_packages
-      cleanup_homebrew
+      if File.exists?('/usr/local/bin/brew')
+        update_brew_packages
+        cleanup_homebrew
+      end
       update_oh_my_zsh
       if File.exist? File.expand_path('~/.rvm')
         update_rvm
