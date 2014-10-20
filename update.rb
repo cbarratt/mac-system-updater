@@ -20,6 +20,9 @@ module System
       OSX.system_info
       Ruby.check_rubygems_version
 
+      ZSH.update if ZSH.installed?
+      Rbenv.update if Rbenv.installed?
+
       if Brew.installed?
         Brew.update
         Brew.cleanup
@@ -29,9 +32,6 @@ module System
         RVM.update
         RVM.cleanup
       end
-
-      ZSH.update if ZSH.installed?
-      Rbenv.update if Rbenv.installed?
 
       OSX.intro
       OSX.check_mac_store_updates

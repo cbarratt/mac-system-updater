@@ -18,7 +18,7 @@ class RVM
       begin
         PTY.spawn('rvm cleanup all') do |stdin, stdout, stderr, thread|
           begin
-            stdin.each { |line| print line }
+            stdin.each { |line| print line.indent(4) }
           rescue Errno::EIO
           end
         end

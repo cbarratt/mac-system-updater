@@ -9,7 +9,7 @@ class Brew
       Open3.popen3('brew cleanup') do |stdin, stdout|
         output = stdout.read
         if output.empty?
-          puts "#{Tty.green}  - Old Homebrew packages already cleaned.#{Tty.reset}"
+          puts "#{Tty.green}  - Homebrew packages already clean.#{Tty.reset}"
         else
           puts "#{Tty.green}  - Cleaned Homebrew packages.#{Tty.reset}"
         end

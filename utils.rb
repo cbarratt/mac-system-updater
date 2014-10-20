@@ -1,3 +1,16 @@
+String.class_eval do
+  def indent(count, char = ' ')
+    gsub(/([^\n]*)(\n|$)/) do |match|
+      last_iteration = ($1 == '' && $2 == '')
+      line = ''
+      line << (char * count) unless last_iteration
+      line << $1
+      line << $2
+      line
+    end
+  end
+end
+
 def check_update_message(app)
   puts "#{Tty.white}# Checking #{app} for updates...#{Tty.reset}"
 end
@@ -35,7 +48,7 @@ class Tty
     def yellow; underline 33; end
     def reset; escape 0; end
     def em; underline 39; end
-    def green; bold 32; end
+    def green; color 32; end
     def gray; bold 30; end
 
     private
@@ -62,7 +75,6 @@ class String
   def undent
     gsub(/^.{#{(slice(/^ +/) || '').length}}/, '')
   end
-
   # eg:
   #   if foo then <<-EOS.undent_________________________________________________________72
   #               Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
@@ -74,5 +86,4 @@ class String
   #               mollit anim id est laborum.
   #               EOS
   alias_method :undent_________________________________________________________72, :undent
-
 end

@@ -31,15 +31,19 @@ class OSX
 
   def self.check_mac_store_updates
     check_update_message('Mac App Store')
-    Open3.popen3('softwareupdate -l') do |stdin, stdout, stderr|
-      output = stdout.read
-      error = stderr.read
-      updates = output.split(/\r\n|\r|\n/, 5).last
-      if output.include?('Software Update found')
-        puts updates
-        %x(softwareupdate -i -a)
+    if run?
+      Open3.popen3('softwareupdate -l') do |stdin, stdout, stderr|
+        output = stdout.read
+        error = stderr.read
+        updates = output.split(/\r\n|\r|\n/, 5).last
+        if output.include?('Software Update found')
+          puts updates
+          %x(softwareupdate -i -a)
+        end
+        puts "#{Tty.green}  - No new software updates available.#{Tty.reset}" if error.include?('No new software available')
       end
-      puts "#{Tty.green}  - No new software updates available.#{Tty.reset}" if error.include?('No new software available')
+    else
+      puts "#{Tty.red}  - Skipped.#{Tty.reset}"
     end
     break_output
   end
@@ -47,15 +51,15 @@ class OSX
   def self.repair_disk_permissions
     puts '# Repairing OSX disk permissions'
     if run?
-      begin
-        PTY.spawn('diskutil repairPermissions /') do |stdin, stdout, stderr, thread|
-          begin
-            stdin.each { |line| print line }
-          rescue Errno::EIO
-          end
+      Open3.popen2e('diskutil repairPermissions /') do |stdin, stdout_err, wait_thr|
+        while line = stdout_err.gets
+          puts "#{Tty.green}#{line.delete!("\n").indent(4)}#{Tty.reset}"
         end
-      rescue PTY::ChildExited
-        puts 'The child process exited!'
+
+        exit_status = wait_thr.value
+        unless exit_status.success?
+          abort "FAILED !!! #{cmd}"
+        end
       end
     else
       puts "#{Tty.red}  - Skipped.#{Tty.reset}"
