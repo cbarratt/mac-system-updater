@@ -6,14 +6,25 @@ def break_output
   puts ''
 end
 
+def yes_or_no
+  begin
+    system('stty raw -echo')
+    str = STDIN.getc
+  ensure
+    system('stty -raw echo')
+  end
+  if str == 'y'
+    return true
+  elsif str == 'n'
+    return false
+  else
+    raise 'Invalid choice. Options are "y" or "n"'
+  end
+end
+
 def run?
   puts '  - Do you want to perform this action? (y/n)'
-  answer = gets.chomp
-  if answer == 'y'
-    true
-  else
-    false
-  end
+  yes_or_no
 end
 
 class Tty
