@@ -35,6 +35,7 @@ module System
       puts '  - Host: ' + %x(scutil --get ComputerName)
       puts '  - RAM: '  + %x(sysctl -n hw.memsize | awk '{print $0/1073741824" GB"}')
       puts '  - IP: '   + %x(ipconfig getifaddr en0)
+      puts '  - Ruby: ' + %x(ruby -e 'puts RUBY_DESCRIPTION')
       break_output
     end
 
