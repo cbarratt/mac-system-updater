@@ -1,6 +1,6 @@
 class ZSH
   def self.installed?
-    File.exist? File.expand_path('~/.oh-my-zsh')
+    file_or_folder_exists?('/.oh-my-zsh')
   end
 
   def self.update

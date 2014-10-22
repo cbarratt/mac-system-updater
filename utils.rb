@@ -11,6 +11,12 @@ String.class_eval do
   end
 end
 
+def file_or_folder_exists?(file)
+  home = ENV['HOME']
+  path = "#{home}" "#{file}"
+  File.exist?(path)
+end
+
 def check_update_message(app)
   puts "#{Tty.white}# Checking #{app} for updates...#{Tty.reset}"
 end
@@ -27,6 +33,7 @@ def yes_or_no
     system('stty -raw echo')
   end
   if str == 'y'
+    puts '  - Performing...'
     return true
   elsif str == 'n'
     return false
