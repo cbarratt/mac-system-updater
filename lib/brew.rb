@@ -5,18 +5,18 @@ class Brew
     end
 
     def cleanup
-      puts "#{Tty.white}# Cleanup of Homebrew packages#{Tty.reset}"
+      puts 'Cleanup of Homebrew packages'.colorize(:light_white).bold
       if run?
         Open3.popen3('brew cleanup') do |stdin, stdout|
           output = stdout.read
           if output.empty?
-            puts "#{Tty.green}  - Homebrew packages already clean.#{Tty.reset}"
+            puts '  - Homebrew packages already clean.'.colorize(:green)
           else
-            puts "#{Tty.green}  - Cleaned Homebrew packages.#{Tty.reset}"
+            puts '  - Cleaned Homebrew packages.'.colorize(:green)
           end
         end
       else
-        puts "#{Tty.red}  - Skipped.#{Tty.reset}"
+        puts '  - Skipped.'.colorize(:red)
       end
       break_output
     end
@@ -24,9 +24,9 @@ class Brew
     def update
       check_update_message('Homebrew')
       if %x(brew update | grep Already)
-        puts "#{Tty.green}  - Homebrew packages already up to date.#{Tty.reset}"
+        puts '  - Homebrew packages already up to date.'.colorize(:green)
       else
-        puts '# Updating Homebrew packages...'
+        puts '  - Updating Homebrew packages...'.colorize(:green)
         system 'brew update'
       end
       break_output

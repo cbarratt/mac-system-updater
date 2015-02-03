@@ -10,7 +10,7 @@ class Ruby
       if Gem::Version.new(current) < Gem::Version.new(latest)
         system 'gem update --system'
       else
-        puts "#{Tty.green}  - You currently have Rubygems #{current} which is the latest version.#{Tty.reset}"
+        puts "  - You currently have Rubygems #{current} installed which is the latest version.".colorize(:green)
       end
 
       break_output
@@ -26,7 +26,7 @@ class Ruby
       if Gem::Version.new(current) < Gem::Version.new(latest)
         system 'gem install bundler'
       else
-        puts "#{Tty.green}  - You currently have Bundler #{current} which is the latest version.#{Tty.reset}"
+        puts "  - You currently have Bundler #{current} installed which is the latest version.".colorize(:green)
       end
 
       break_output

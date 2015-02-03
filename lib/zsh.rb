@@ -10,9 +10,9 @@ class ZSH
       Open3.popen3('env ZSH=$ZSH /bin/sh $ZSH/tools/upgrade.sh') do |stdin, stdout|
         output = stdout.read
         if output.include?('Current branch master is up to date')
-          puts "#{Tty.green}  - Oh My Zsh already up to date.#{Tty.reset}"
+          puts '  - Oh My Zsh already up to date.'.colorize(:green)
         else
-          puts '# Updating Oh My Zsh...'
+          puts '  - Updating Oh My Zsh...'.colorize(:green)
           system 'env ZSH=$ZSH /bin/sh $ZSH/tools/upgrade.sh'
         end
       end

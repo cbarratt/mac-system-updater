@@ -6,8 +6,8 @@ class Rbenv
 
     def update
       check_update_message('rbenv')
-      Open3.popen3('cd ~/.rbenv && git pull && cd cd plugins/ruby-build/ && git pull') do |stdin, stdout, stderr, thread|
-        puts '  - rbenv updated.'
+      Open3.popen3('cd ~/.rbenv && git pull && cd plugins/ruby-build/ && git pull') do |stdin, stdout, stderr, thread|
+        puts '  - rbenv updated.'.colorize(:green)
       end
       break_output
     end

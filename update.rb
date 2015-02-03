@@ -1,16 +1,16 @@
 #!/usr/bin/env ruby
 
-require_relative 'utils'
-require_relative 'rvm'
-require_relative 'brew'
-require_relative 'ruby'
-require_relative 'osx'
-require_relative 'zsh'
-require_relative 'rbenv'
+require './lib/utility'
+require './lib/rvm'
+require './lib/brew'
+require './lib/ruby'
+require './lib/osx'
+require './lib/zsh'
+require './lib/rbenv'
 
+require 'colorize'
 require 'open3'
 require 'pty'
-require 'pry'
 require 'json'
 require 'net/http'
 

@@ -1,10 +1,10 @@
 class OSX
   class << self
     def intro
-      puts <<-EOS.undent
-      #{Tty.white}##################
+      puts <<-EOS.undent.colorize(:light_white)
+      ##################
       # Mac OSX checks #
-      ###################{Tty.reset}
+      ##################
       EOS
       break_output
     end
@@ -17,8 +17,8 @@ class OSX
       ip = %x(ipconfig getifaddr en0).delete!("\n")
       ruby = %x(ruby -e 'puts RUBY_DESCRIPTION').delete!("\n")
 
-      puts <<-EOS.undent
-        #{Tty.white}# System information:#{Tty.reset}
+      puts <<-EOS.undent.colorize(:light_white).bold
+        System information:
           - CPU:   #{cpu}
           - OSX:   #{osx}
           - Host:  #{hostname}
@@ -41,10 +41,10 @@ class OSX
             puts updates
             %x(softwareupdate -i -a)
           end
-          puts "#{Tty.green}  - No new software updates available.#{Tty.reset}" if error.include?('No new software available')
+          puts '  - No new software updates available.' if error.include?('No new software available')
         end
       else
-        puts "#{Tty.red}  - Skipped.#{Tty.reset}"
+        puts '  - Skipped.'.colorize(:red)
       end
       break_output
     end
@@ -54,7 +54,7 @@ class OSX
       if run?
         Open3.popen2e('diskutil repairPermissions /') do |stdin, stdout_err, wait_thr|
           while line = stdout_err.gets
-            puts "#{Tty.green}#{line.delete!("\n").indent(4)}#{Tty.reset}"
+            puts line.delete!("\n").indent(4).colorize(:green)
           end
 
           exit_status = wait_thr.value
@@ -63,7 +63,7 @@ class OSX
           end
         end
       else
-        puts "#{Tty.red}  - Skipped.#{Tty.reset}"
+        puts '  - Skipped.'.colorize(:red)
       end
     end
   end
