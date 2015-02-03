@@ -1,12 +1,15 @@
 #!/usr/bin/env ruby
+APP_ROOT = File.dirname(__FILE__)
+$:.unshift(File.join(APP_ROOT, 'lib') )
 
-require './lib/utility'
-require './lib/rvm'
-require './lib/brew'
-require './lib/ruby'
-require './lib/osx'
-require './lib/zsh'
-require './lib/rbenv'
+
+require 'utility'
+require 'rvm'
+require 'brew'
+require 'ruby'
+require 'osx'
+require 'zsh'
+require 'rbenv'
 
 require 'colorize'
 require 'open3'
