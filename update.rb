@@ -16,9 +16,13 @@ require 'net/http'
 
 module System
   class Update
+
+    AUTO_RUN = ARGV[0]
+
     def perform
       OSX.system_info
       Ruby.check_rubygems_version
+      Ruby.check_bundler_version
 
       ZSH.update if ZSH.installed?
       Rbenv.update if Rbenv.installed?

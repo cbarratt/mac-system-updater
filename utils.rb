@@ -43,8 +43,12 @@ def yes_or_no
 end
 
 def run?
-  puts '  - Do you want to perform this action? (y/n)'
-  yes_or_no
+  if System::Update::AUTO_RUN == 'yes'
+    return true
+  else
+    puts '  - Do you want to perform this action? (y/n)'
+    yes_or_no
+  end
 end
 
 class Tty
