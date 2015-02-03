@@ -16,7 +16,6 @@ require 'net/http'
 
 module System
   class Update
-
     AUTO_RUN = ARGV[0]
 
     def perform

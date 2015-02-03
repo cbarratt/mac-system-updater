@@ -1,4 +1,6 @@
 class OSX
+  using StringExtensions
+
   class << self
     def intro
       puts <<-EOS.undent.colorize(:light_white)
@@ -16,6 +18,8 @@ class OSX
       ram = %x(sysctl -n hw.memsize | awk '{print $0/1073741824" GB"}').delete!("\n")
       ip = %x(ipconfig getifaddr en0).delete!("\n")
       ruby = %x(ruby -e 'puts RUBY_DESCRIPTION').delete!("\n")
+
+      break_output
 
       puts <<-EOS.undent.colorize(:light_white).bold
         System information:
