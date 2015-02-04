@@ -1,24 +1,24 @@
-OSX Update script
-=================
+# OSX Update script
 
-# What does it do?
+### Compatability
+
+* Ruby 2.1+ (this is due to Refinements changing a lot)
 
 The script will check and update any of the following if installed:
 
-* Rubygems
-* Bundler
-* OhMyZsh
-* Homebrew
-* RVM
-* rbenv
-* Mac App Store
+* Rubygems gem
+* Bundler gem
+* OhMyZsh (performs git pull)
+* Homebrew (performs brew update - NOT upgrade, there's a future feature in there to be done for upgrading)
+* RVM (rvm get stable)
+* rbenv (performs git pull)
+* Mac App Store (Lists out all available MAS updates, currently doesn't have the functionality to install)
 
 It also has the ability to cleanup old versions of Homebrew installed software and RVM sources/gems.
 
 ![ScreenShot](http://files.bolser.co.uk/files/Screen%20Shot%202014-10-23%20at%2016.40.25.png)
 
-Usage
-=================
+# Usage
 
 You can automatically run all checks & updates by passing in yes as a command line argument, for example:
 
