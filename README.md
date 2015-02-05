@@ -20,9 +20,13 @@ It also has the ability to cleanup old versions of Homebrew installed software a
 
 # Usage
 
-You can automatically run all checks & updates by passing in yes as a command line argument, for example:
+You can automatically run all checks and updates by passing in `yes` as a command line argument, for example:
 
-```./update.rb yes```
+```bash
+./update.rb yes
+```
 
+```bash
 git clone git@github.com:cbarratt/mac_system_update.git && cd mac_system_update && ./update.rb
+```
 
