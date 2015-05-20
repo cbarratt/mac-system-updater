@@ -32,6 +32,8 @@ Simply:
 
 `gem install dev_osx_updater`
 
+**NOTE: Please restart your terminal to activate the bin!**
+
 Then run:
 
 `dev_osx_update`
