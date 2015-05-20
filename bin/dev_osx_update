@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+os = Gem::Platform.local
+
+if os.to_s =~ /[darwin]/i
+  require File.join(File.dirname(__FILE__), '..', 'lib', 'system')
+  System::Update.new.perform
+else
+  puts 'This program currently requires Mac OSX to run. In a future release we hope to make it Linux compatible.'.colorize(:red).bold
+end
