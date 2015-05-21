@@ -48,7 +48,9 @@ def yes_or_no
   elsif str == 'n'
     return false
   else
-    raise 'Invalid choice. Options are "y" or "n"'
+    puts '  - Invalid choice!'.colorize(:red).bold
+    print '  - Options are "y" or "n" - Please try again! (y/n) '
+    yes_or_no
   end
 end
 
