@@ -14,7 +14,7 @@ class RVM
     end
 
     def cleanup
-      puts 'Cleanup of RVM data'.colorize(:light_white).bold
+      cleanup_message('RVM')
       if run?
         begin
           PTY.spawn('rvm cleanup all') do |stdin, stdout, stderr, thread|

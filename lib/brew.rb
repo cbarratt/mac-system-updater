@@ -5,7 +5,7 @@ class Brew
     end
 
     def cleanup
-      puts 'Cleanup of Homebrew packages'.colorize(:light_white).bold
+      cleanup_message('Homebrew')
       if run?
         Open3.popen3('brew cleanup') do |stdin, stdout|
           output = stdout.read

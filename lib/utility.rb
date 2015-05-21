@@ -28,7 +28,11 @@ def file_or_folder_exists?(file)
 end
 
 def check_update_message(app)
-  puts "Checking #{app} for updates...".colorize(:light_white).bold
+  puts "| Checking #{app} for updates...".bold
+end
+
+def cleanup_message(app)
+  puts "| Cleaning up #{app}".bold
 end
 
 def break_output
@@ -36,14 +40,10 @@ def break_output
 end
 
 def yes_or_no
-  begin
-    system('stty raw -echo')
-    str = STDIN.getc
-  ensure
-    system('stty -raw echo')
-  end
+  str = gets.chomp
+
   if str == 'y'
-    puts '  - Performing...'
+    puts '  - Performing...'.colorize(:light_cyan)
     return true
   elsif str == 'n'
     return false
@@ -53,10 +53,8 @@ def yes_or_no
 end
 
 def run?
-  if System::Update::AUTO_RUN == '--auto'
-    return true
-  else
-    puts '  - Do you want to perform this action? (y/n)'
-    yes_or_no
-  end
+  return true if System::Update::AUTO_RUN == '--auto'
+
+  print "  - Do you want to perform this action? (y/n) "
+  yes_or_no
 end

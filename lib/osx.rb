@@ -1,12 +1,14 @@
+require 'dev_osx_updater/version'
+
 class OSX
   using StringExtensions
 
   class << self
     def intro
-      puts <<-EOS.undent.colorize(:light_white)
-      ##################
-      # Mac OSX checks #
-      ##################
+      puts <<-EOS.undent
+      -------------------
+      # OSX Maintenance #
+      -------------------
       EOS
       break_output
     end
@@ -20,7 +22,10 @@ class OSX
 
       break_output
 
-      puts <<-EOS.undent.colorize(:light_white).bold
+      puts <<-EOS.undent.bold
+        Mac OSX updater version: #{DevOsxUpdater::VERSION}
+        ------------------------------
+
         System information:
           - CPU:   #{cpu}
           - OSX:   #{osx}
@@ -52,7 +57,7 @@ class OSX
     end
 
     def repair_disk_permissions
-      puts '# Repairing OSX disk permissions'
+      puts '| Repairing OSX disk permissions'.bold
       if run?
         Open3.popen2e('diskutil repairPermissions /') do |stdin, stdout_err, wait_thr|
           while line = stdout_err.gets
@@ -66,6 +71,7 @@ class OSX
         end
       else
         puts '  - Skipped.'.colorize(:red)
+        break_output
       end
     end
   end
