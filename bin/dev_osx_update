@@ -1,10 +1,14 @@
 #!/usr/bin/env ruby
 
-os = Gem::Platform.local
+require 'colorize'
 
-if os.to_s =~ /[darwin]/i
-  require File.join(File.dirname(__FILE__), '..', 'lib', 'system')
+if Gem::Platform.local.os.include?('darwin')
+  require 'system'
+
   System::Update.new.perform
 else
-  puts 'This program currently requires Mac OSX to run. In a future release we hope to make it Linux compatible.'.colorize(:red).bold
+  puts %(
+    This program currently requires Mac OSX to run.
+    In a future release we hope to make it Linux compatible.
+  ).colorize(:red).bold
 end

@@ -1,5 +1,3 @@
-$LOAD_PATH << File.expand_path('..', __FILE__)
-
 # Gems
 require 'colorize'
 require 'open3'

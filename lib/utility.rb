@@ -10,12 +10,12 @@ end
 
 String.class_eval do
   def indent(count, char = ' ')
-    gsub(/([^\n]*)(\n|$)/) do |match|
-      last_iteration = ($1 == '' && $2 == '')
+    gsub(/([^\n]*)(\n|$)/) do
+      last_iteration = (Regexp.last_match(1) == '' && Regexp.last_match(2) == '')
       line = ''
       line << (char * count) unless last_iteration
-      line << $1
-      line << $2
+      line << Regexp.last_match(1)
+      line << Regexp.last_match(2)
       line
     end
   end
@@ -57,6 +57,6 @@ end
 def run?
   return true if System::Update::AUTO_RUN == '--auto'
 
-  print "  - Do you want to perform this action? (y/n) "
+  print '  - Do you want to perform this action? (y/n) '
   yes_or_no
 end

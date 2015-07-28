@@ -23,7 +23,7 @@ class Ruby
       current = %x(bundler -v).delete!("Bundler version\n")
       latest = @response['version']
 
-      if current == nil || Gem::Version.new(current) < Gem::Version.new(latest)
+      if current.nil? || Gem::Version.new(current) < Gem::Version.new(latest)
         system 'gem install bundler'
       else
         puts "  - You currently have Bundler #{current} installed which is the latest version.".colorize(:green)
