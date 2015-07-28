@@ -1,11 +1,9 @@
-# Gems
 require 'colorize'
 require 'open3'
 require 'pty'
 require 'json'
 require 'net/http'
 
-# Local files
 require 'utility'
 require 'rvm'
 require 'brew'

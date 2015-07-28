@@ -46,7 +46,6 @@ class OSX
           updates = output.split(/\r\n|\r|\n/, 5).last
           if output.include?('Software Update found')
             puts updates
-            # %x(softwareupdate -i -a) - Commented out as we dont want to auto update yet.
           end
           puts '  - No new software updates available.' if error.include?('No new software available')
         end
