@@ -4,7 +4,7 @@ class Ruby
       check_update_message('Rubygems')
       get_gem_json('rubygems-update')
 
-      current = %x(gem -v).delete!("\n")
+      current = `gem -v`.delete!("\n")
       latest = @response['version']
 
       if Gem::Version.new(current) < Gem::Version.new(latest)
@@ -20,7 +20,7 @@ class Ruby
       check_update_message('Bundler')
       get_gem_json('bundler')
 
-      current = %x(bundler -v).delete!("Bundler version\n")
+      current = `bundler -v`.delete!("Bundler version\n")
       latest = @response['version']
 
       if current.nil? || Gem::Version.new(current) < Gem::Version.new(latest)

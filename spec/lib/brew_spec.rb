@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'system'
 
 RSpec.describe Brew do
-  subject { Brew::installed? }
+  subject { Brew.installed? }
 
   describe '#installed?' do
     it 'should return true if homebrew is installed' do

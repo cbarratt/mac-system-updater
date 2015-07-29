@@ -6,10 +6,10 @@ class RVM
 
     def update
       check_update_message('RVM')
-      Open3.popen3('rvm get stable') do |stdin, stdout|
-        output = stdout.read
-        puts '  - RVM updated.'.colorize(:green) if output.include?('RVM reloaded')
-      end
+
+      result, _cmd = Open3.capture2e('rvm get stable')
+      puts '  - RVM updated.'.colorize(:green) if result.include?('RVM reloaded')
+
       break_output
     end
 

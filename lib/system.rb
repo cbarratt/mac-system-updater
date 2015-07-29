@@ -18,22 +18,32 @@ module System
 
     def perform
       OSX.system_info
-      Ruby.check_rubygems_version
-      Ruby.check_bundler_version
+      ruby
 
       ZSH.update if ZSH.installed?
       Rbenv.update if Rbenv.installed?
 
-      if Brew.installed?
-        Brew.update
-        Brew.cleanup
-      end
+      brew if Brew.installed?
+      rvm if RVM.installed?
+      osx
+    end
 
-      if RVM.installed?
-        RVM.update
-        RVM.cleanup
-      end
+    def ruby
+      Ruby.check_rubygems_version
+      Ruby.check_bundler_version
+    end
 
+    def brew
+      Brew.update
+      Brew.cleanup
+    end
+
+    def rvm
+      RVM.update
+      RVM.cleanup
+    end
+
+    def osx
       OSX.intro
       OSX.check_mac_store_updates
       OSX.repair_disk_permissions

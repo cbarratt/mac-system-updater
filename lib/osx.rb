@@ -40,13 +40,12 @@ class OSX
     def check_mac_store_updates
       check_update_message('Mac App Store')
       if run?
-        Open3.popen3('softwareupdate -l') do |stdin, stdout, stderr|
+        Open3.popen3('softwareupdate -l') do |_stdin, stdout, stderr|
           output = stdout.read
           error = stderr.read
           updates = output.split(/\r\n|\r|\n/, 5).last
-          if output.include?('Software Update found')
-            puts updates
-          end
+
+          puts updates if output.include?('Software Update found')
           puts '  - No new software updates available.' if error.include?('No new software available')
         end
       else
@@ -58,16 +57,15 @@ class OSX
     def repair_disk_permissions
       puts '| Repairing OSX disk permissions...'.bold
       if run?
-        Open3.popen2e('diskutil repairPermissions /') do |stdin, stdout_err, wait_thr|
+        Open3.popen2e('diskutil repairPermissions /') do |_stdin, stdout_err, wait_thr|
           while line = stdout_err.gets
             puts line.delete!("\n").indent(4).colorize(:green)
             break_output
           end
 
           exit_status = wait_thr.value
-          unless exit_status.success?
-            abort "FAILED !!! #{cmd}"
-          end
+
+          abort "FAILED !!! #{cmd}" unless exit_status.success?
         end
       else
         puts '  - Skipped.'.colorize(:red)

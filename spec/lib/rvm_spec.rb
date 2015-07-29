@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'system'
 
 RSpec.describe RVM do
-  subject { RVM::installed? }
+  subject { RVM.installed? }
 
   describe '#installed?' do
     it 'should return true if RVM is installed' do
