@@ -19,6 +19,10 @@ class Brew
       break_output
     end
 
+    def info
+      `brew info`.delete!("\n")
+    end
+
     def update
       check_update_message('Homebrew')
 

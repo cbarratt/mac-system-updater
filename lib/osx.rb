@@ -31,7 +31,14 @@ class OSX
           - OSX:   #{osx}
           - Host:  #{hostname}
           - RAM:   #{ram}
-          - Ruby:  #{ruby}
+
+        Ruby:
+          - Ruby version:     #{ruby}
+          - RubyGems version: #{Ruby.rubygems_version}
+          - Bundler version:  #{Ruby.bundler_version}
+
+        Homebrew:
+          - Usage: #{Brew.info if Brew.installed?}
       EOS
 
       break_output
