@@ -10,6 +10,7 @@ require 'brew'
 require 'ruby'
 require 'osx'
 require 'zsh'
+require 'pretzo'
 require 'rbenv'
 
 module System
@@ -21,6 +22,7 @@ module System
       ruby
 
       ZSH.update if ZSH.installed?
+      Pretzo.update if Pretzo.installed?
       Rbenv.update if Rbenv.installed?
 
       brew if Brew.installed?
