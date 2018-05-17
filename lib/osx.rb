@@ -60,24 +60,5 @@ class OSX
       end
       break_output
     end
-
-    def repair_disk_permissions
-      puts '| Repairing OSX disk permissions...'.bold
-      if run?
-        Open3.popen2e('diskutil repairPermissions /') do |_stdin, stdout_err, wait_thr|
-          while line = stdout_err.gets
-            puts line.delete!("\n").indent(4).colorize(:green)
-            break_output
-          end
-
-          exit_status = wait_thr.value
-
-          abort "FAILED !!! #{cmd}" unless exit_status.success?
-        end
-      else
-        puts '  - Skipped.'.colorize(:red)
-        break_output
-      end
-    end
   end
 end

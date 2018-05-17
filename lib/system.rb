@@ -48,7 +48,6 @@ module System
     def osx
       OSX.intro
       OSX.check_mac_store_updates
-      OSX.repair_disk_permissions
     end
   end
 end
