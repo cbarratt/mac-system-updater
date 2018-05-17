@@ -1,8 +1,6 @@
 Mac OSX Ruby / Rails development environment updater
 ====================================================
 
-[![Join the chat at https://gitter.im/cbarratt/mac_system_update](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/cbarratt/mac_system_update?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 ### Compatability
 
 * Ruby 2.1+ (this is due to Refinements changing a lot)
@@ -38,7 +36,7 @@ Then run:
 
 `dev_osx_update`
 
-![ScreenShot](http://files.bolser.co.uk/files/Screen%20Shot%202014-10-23%20at%2016.40.25.png)
+![ScreenShot](./screenshots/running.png)
 
 ## Contributing
 
